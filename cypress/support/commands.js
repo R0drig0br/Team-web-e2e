@@ -41,7 +41,7 @@ Cypress.Commands.add("login", () => {
 			const { token, user } = body;
 			cy.window().then((win) => {
 				win.localStorage.setItem("user", JSON.stringify({ token, user }));
-				return token;
+				return { token, user };
 			});
 		});
 });
@@ -59,3 +59,6 @@ Cypress.Commands.add("getClubs", (token) => {
 		return body.clubs;
 	});
 });
+
+
+
