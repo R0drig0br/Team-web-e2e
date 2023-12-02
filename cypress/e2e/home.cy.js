@@ -42,4 +42,32 @@ describe("Home", () => {
 			cy.get('div').should('contain','Lakers');
 		  });
 	})
+
+	it("[Successful H-4] Add club", () => {
+		
+		cy.login().then(({ token, user }) => {
+			
+			expect(token).to.exist;
+			expect(user).to.exist;
+			expect(user.name).to.exist;
+	  
+			
+			cy.visit("/", {
+			  failOnStatusCode: false,
+			});
+	  
+			cy.contains('Add Club').click();
+
+			cy.get('.text-h6').should('contain','Add club')
+
+			cy.get('input[aria-label="Club name"]').type('Texto de ejemplo');
+
+			cy.get('input[aria-label="Club description"]').type('Texto de ejemplo');
+
+			cy.contains('button', 'Add Club').click();
+
+
+
+		  });
+	})
 });
