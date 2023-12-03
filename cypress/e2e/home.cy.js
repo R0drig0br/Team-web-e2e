@@ -65,9 +65,33 @@ describe("Home", () => {
 			cy.get('input[aria-label="Club description"]').type('Texto de ejemplo');
 
 			cy.contains('button', 'Add Club').click();
+		  });
+	})
 
+	it("[Error H-5] Add club without name", () => {
+		
+		cy.login().then(({ token, user }) => {
+			
+			expect(token).to.exist;
+			expect(user).to.exist;
+			expect(user.name).to.exist;
+	  
+			
+			cy.visit("/", {
+			  failOnStatusCode: false,
+			});
+	  
+			cy.contains('Add Club').click();
 
+			cy.get('.text-h6').should('contain','Add club')
 
+			
+
+			cy.get('input[aria-label="Club description"]').type('Texto de ejemplo');
+
+			cy.contains('button', 'Add Club').click();
+
+			cy.get('p').should('contain', 'name is required')
 		  });
 	})
 });
