@@ -11,6 +11,13 @@ describe("Club", () => {
 		});
 	});
 
+	it("[Error C-2] club without using token", () => {
+		cy.visit('/club', {
+			failOnStatusCode: false,
+		});
+		cy.url().should('eq', `${Cypress.config().baseUrl}/login`)
+	});
+
 	it("[SUCCESS C-3] add member", () => {
 		cy.login().then(({ token, user }) => {
 			cy.getClubs(token).then((clubes) => {
@@ -44,7 +51,6 @@ describe("Club", () => {
 				cy.visit("/", {
 					failOnStatusCode: false,
 				});
-				var originalNumber = 0;
 				cy.get(`div[id=${clubes[0]._id}]`).click();
 				cy.get('span[class="text-h3"]').contains(clubes[0].name);
 				cy.contains('New member').click();
@@ -54,6 +60,19 @@ describe("Club", () => {
 				cy.get('[name="member-nickname"]').type('Nickname ejemplo');
 				cy.contains('span[class="block"]', 'Add Member').click();
 				cy.get('p').should('contain', 'email is required and must be a valid email');
+			});
+		});
+	});
+
+	it("[Error C-5] delete member from club", () => {
+		cy.login().then(({ token, user }) => {
+			cy.getClubs(token).then((clubes) => {
+				cy.visit("/", {
+					failOnStatusCode: false,
+				});
+				cy.get(`div[id=${clubes[1]._id}]`).click();
+				cy.contains('i', 'delete_forever').click();
+				cy.get('div').should('contain', 'Unavailable');
 			});
 		});
 	});
