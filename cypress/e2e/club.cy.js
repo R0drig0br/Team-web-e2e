@@ -12,6 +12,7 @@ describe("Club", () => {
 	});
 
 	it("[SUCCESS C-3] add member", () => {
+		const randomUser = require('../fixtures/randomUser');
 		cy.login().then(({ token, user }) => {
 			cy.getClubs(token).then((clubes) => {
 				cy.visit("/", {
@@ -24,11 +25,11 @@ describe("Club", () => {
 					originalNumber = parseInt(originalText.match(/\d+/)[0]);
 				}),
 				cy.contains('New member').click();
-				cy.get('[name="member-name"]').type('Nombre ejemplo');
-				cy.get('[name="member-lastname"]').type('Apellido ejemplo');
-				cy.get('[name="member-email"]').type('brevis@ejemplo.com');
-				cy.get('[name="member-dni"]').type('DNI ejemplo');
-				cy.get('[name="member-nickname"]').type('Nickname ejemplo');
+				cy.get('[name="member-name"]').type(randomUser.firstName);
+				cy.get('[name="member-lastname"]').type(randomUser.lastName);
+				cy.get('[name="member-email"]').type(randomUser.email);
+				cy.get('[name="member-dni"]').type(randomUser.dni);
+				cy.get('[name="member-nickname"]').type(randomUser.nickname);
 				cy.contains('span[class="block"]', 'Add Member').click();
 				cy.get('.text-h6').invoke('text').then((newText) => {
 					const newNumber = parseInt(newText.match(/\d+/)[0]);				
