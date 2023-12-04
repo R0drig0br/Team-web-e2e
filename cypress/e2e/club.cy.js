@@ -25,23 +25,27 @@ describe("Club", () => {
 				cy.visit("/", {
 					failOnStatusCode: false,
 				});
-				var originalNumber = 0;
+
 				cy.get(`div[id=${clubes[0]._id}]`).click();
 				cy.get('span[class="text-h3"]').contains(clubes[0].name);
+				cy.wait(3000);
 				cy.get('.text-h6').invoke('text').then((originalText) => {
-					originalNumber = parseInt(originalText.match(/\d+/)[0]);
-				}),
-				cy.contains('New member').click();
-				cy.get('[name="member-name"]').type(randomUser.firstName);
-				cy.get('[name="member-lastname"]').type(randomUser.lastName);
-				cy.get('[name="member-email"]').type(randomUser.email);
-				cy.get('[name="member-dni"]').type(randomUser.dni);
-				cy.get('[name="member-nickname"]').type(randomUser.nickname);
-				cy.contains('span[class="block"]', 'Add Member').click();
-				cy.get('.text-h6').invoke('text').then((newText) => {
-					const newNumber = parseInt(newText.match(/\d+/)[0]);				
-					expect(newNumber).to.eq(originalNumber + 1);
+					const originalNumber = parseInt(originalText.match(/\d+/)[0]);
+					cy.contains('New member').click();
+					cy.get('[name="member-name"]').type(randomUser.firstName);
+					cy.get('[name="member-lastname"]').type(randomUser.lastName);
+					cy.get('[name="member-email"]').type(randomUser.email);
+					cy.get('[name="member-dni"]').type(randomUser.dni);
+					cy.get('[name="member-nickname"]').type(randomUser.nickname);
+					cy.contains('span[class="block"]', 'Add Member').click();
+					cy.wait(3000);
+					cy.get('.text-h6').invoke('text').then((newText) => {
+						const newNumber = parseInt(newText.match(/\d+/)[0]);				
+						expect(newNumber).to.eq(originalNumber + 1);
 				});
+					
+				});
+				
 			});
 		});
 	});
